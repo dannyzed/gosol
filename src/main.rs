@@ -1,3 +1,8 @@
+mod game;
+use game::simpleboard::{SimpleBoard};
+use game::board::{GoBoard};
+
 fn main() {
-    println!("Hello, world!");
+    let game_board = SimpleBoard::new(4, 4);
+    game_board.print_board();
 }
