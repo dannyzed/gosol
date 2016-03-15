@@ -1,0 +1,4 @@
+[package]
+name = "gosol"
+version = "0.1.0"
+authors = ["Daniel Zawada <zawadadaniel@gmail.com>"]
