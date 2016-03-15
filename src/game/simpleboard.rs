@@ -19,7 +19,7 @@ pub struct SimpleBoard {
 impl GoBoard for SimpleBoard {
     fn new(ysize: i8, xsize: i8) -> SimpleBoard {
         SimpleBoard {
-            intersections: vec![State::Empty; (xsize*ysize) as usize],
+            intersections: vec![State::Empty; ((xsize as i32)*(ysize as i32)) as usize],
             groups: Vec::new(),
             xsize: xsize,
             ysize: ysize
@@ -179,12 +179,12 @@ impl SimpleBoard {
     }
 
     fn coordinates_to_index(&self, x: i8, y: i8) -> Option<usize> {
-        let index: i32 = (x + y*self.xsize) as i32;
-        if index < 0 || index >= (self.xsize*self.ysize) as i32 {
+        let index: i32 = ((x as i32) + (y as i32)*(self.xsize as i32)) as i32;
+        if index < 0 || index >= (self.xsize as i32)*(self.ysize as i32) {
             None
         }
         else {
-            Some((x + y*self.xsize) as usize)
+            Some(((x as i32) + (y as i32)*(self.xsize as i32)) as usize)
         }
     }
 
