@@ -1,5 +1,4 @@
 use game::board::{GoBoard, GoMove, State};
-use std::iter;
 
 struct Group {
     indicies: Vec<usize>,
