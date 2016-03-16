@@ -10,7 +10,7 @@ struct Group {
 // A very simple GoBoard implementation where little attempt is made to optimize space and
 // time complexities.
 pub struct SimpleBoard {
-    intersections: Vec<State>,
+    pub intersections: Vec<State>,
     groups: Vec<Group>,
     xsize: i8,
     ysize: i8,
