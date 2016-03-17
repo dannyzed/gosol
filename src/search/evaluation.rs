@@ -1,7 +1,7 @@
 use game::simpleboard::SimpleBoard;
 use game::board::*;
 
-trait Evaluation {
+pub trait Evaluation {
     fn evaluate(&self) -> i64;
 }
 
