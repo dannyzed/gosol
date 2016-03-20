@@ -27,8 +27,8 @@ impl GoBoard for SimpleBoard {
         }
     }
 
-    fn play_move(&mut self, mv: GoMove) {
-        match mv {
+    fn play_move(&mut self, mv: &GoMove) {
+        match *mv {
             GoMove::Move {x, y, player} => self.play_at_coordinates(x, y, player),
             GoMove::Pass => {},
         };
@@ -236,7 +236,7 @@ mod tests {
     fn play_move() {
         let mut game_board = SimpleBoard::new(3, 4);
         let mv = GoMove::Move{x: 2, y: 2, player: State::White};
-        game_board.play_move(mv);
+        game_board.play_move(&mv);
     }
 
     #[test]
@@ -244,7 +244,7 @@ mod tests {
     fn play_move_out_of_bounds() {
         let mut game_board = SimpleBoard::new(3, 3);
         let mv = GoMove::Move{x: 3, y: 3, player: State::White};
-        game_board.play_move(mv);
+        game_board.play_move(&mv);
     }
 
     #[test]
@@ -254,9 +254,9 @@ mod tests {
         let mv2 = GoMove::Move{ x: 0, y: 1, player: State::Black};
         let mv3 = GoMove::Move{ x: 1, y: 0, player: State::Black};
 
-        game_board.play_move(mv1);
-        game_board.play_move(mv2);
-        game_board.play_move(mv3);
+        game_board.play_move(&mv1);
+        game_board.play_move(&mv2);
+        game_board.play_move(&mv3);
 
         assert_eq!(State::Empty, game_board.intersections[0]);
         assert_eq!(State::Black, game_board.intersections[1]);
@@ -267,7 +267,7 @@ mod tests {
     fn pass() {
         let mut game_board = SimpleBoard::new(3, 3);
         let mv = GoMove::Pass;
-        game_board.play_move(mv);
+        game_board.play_move(&mv);
     }
 
     #[test]
@@ -277,12 +277,12 @@ mod tests {
         let mv2 = GoMove::Move{ x: 2, y: 0, player: State::Black};
         let mv3 = GoMove::Move{ x: 1, y: 0, player: State::Black};
 
-        game_board.play_move(mv1);
-        game_board.play_move(mv2);
+        game_board.play_move(&mv1);
+        game_board.play_move(&mv2);
 
         assert_eq!(game_board.groups.len(), 2);
 
-        game_board.play_move(mv3);
+        game_board.play_move(&mv3);
 
         assert_eq!(game_board.groups.len(), 1);
     }
@@ -294,13 +294,13 @@ mod tests {
         let mv2 = GoMove::Move{ x: 1, y: 1, player: State::Black };
         let mv3 = GoMove::Move{ x: 1, y: 0, player: State::Black };
 
-        game_board.play_move(mv1);
-        game_board.play_move(mv2);
-        game_board.play_move(mv3);
+        game_board.play_move(&mv1);
+        game_board.play_move(&mv2);
+        game_board.play_move(&mv3);
 
         let mv4 = GoMove::Move{ x: 0, y: 0, player: State::White };
 
-        game_board.play_move(mv4);
+        game_board.play_move(&mv4);
 
         assert_eq!(State::White, game_board.intersections[0]);
         assert_eq!(State::Empty, game_board.intersections[1]);

@@ -34,12 +34,12 @@ mod tests {
         let mut game_board = SimpleBoard::new(3, 3);
 
         let mv1 = GoMove::Move{x: 0, y: 0, player: State::White};
-        game_board.play_move(mv1);
+        game_board.play_move(&mv1);
         assert_eq!(game_board.evaluate(), -1.0);
         let mv2 = GoMove::Move{x: 1, y: 0, player: State::Black};
-        game_board.play_move(mv2);
+        game_board.play_move(&mv2);
         let mv3 = GoMove::Move{x: 1, y: 1, player: State::Black};
-        game_board.play_move(mv3);
+        game_board.play_move(&mv3);
         assert_eq!(game_board.evaluate(), 1.0);
     }
 }

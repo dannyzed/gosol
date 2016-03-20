@@ -6,6 +6,7 @@ pub enum State {
 }
 
 // A representation of a single move played on the go board.
+#[derive(Clone, Debug, PartialEq)]
 pub enum GoMove {
     Move { x: i8, y: i8, player: State},
     Pass
@@ -18,5 +19,5 @@ pub trait GoBoard {
     fn new(xsize: i8, ysize: i8) -> Self;
 
     // Plays a given move on the goboard
-    fn play_move(&mut self, GoMove);
+    fn play_move(&mut self, &GoMove);
 }
