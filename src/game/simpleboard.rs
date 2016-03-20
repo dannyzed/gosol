@@ -1,5 +1,6 @@
 use game::board::{GoBoard, GoMove, State};
 
+#[derive(Clone)]
 struct Group {
     indicies: Vec<usize>,
     liberties: i8,
@@ -8,6 +9,7 @@ struct Group {
 
 // A very simple GoBoard implementation where little attempt is made to optimize space and
 // time complexities.
+#[derive(Clone)]
 pub struct SimpleBoard {
     pub intersections: Vec<State>,
     groups: Vec<Group>,
