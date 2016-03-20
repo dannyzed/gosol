@@ -21,7 +21,6 @@ pub fn minimax(board: &mut SimpleBoard, depth: i8, maximizing_player: bool) -> (
                     best_value = v;
                     good_move = mv.clone();
                 }
-                best_value = v.max(best_value);
             }
             (best_value, Some(good_move))
         }
@@ -38,7 +37,6 @@ pub fn minimax(board: &mut SimpleBoard, depth: i8, maximizing_player: bool) -> (
                     best_value = v;
                     good_move = mv.clone();
                 }
-                best_value = v.min(best_value);
             }
             (best_value, Some(good_move))
         }
@@ -49,6 +47,7 @@ pub fn minimax(board: &mut SimpleBoard, depth: i8, maximizing_player: bool) -> (
 mod tests {
     use game::simpleboard::SimpleBoard;
     use game::board::*;
+    use search::evaluation::*;
     use super::*;
 
     #[test]
@@ -71,9 +70,27 @@ mod tests {
             game_board.play_move(&mv);
         }
 
-        let (_, mv) = minimax(&mut game_board, 8, true);
+        println!("", );
+        for idx in 0..5 {
+            game_board.print_board();
+            if idx % 2 == 0 {
+                let (val, mv) = minimax(&mut game_board, 8, true);
+                game_board.play_move(&mv.unwrap());
+            }
+            else {
+                let (val, mv) = minimax(&mut game_board, 8, false);
+                game_board.play_move(&mv.unwrap());
+            }
+            println!("", );
+        }
 
-        assert_eq!(mv.unwrap(), GoMove::Move{x: 1, y: 0, player: State::Black});
+
+        println!("{:?}", game_board.evaluate());
+        //game_board.play_move(&GoMove::Move{x: 1, y: 0, player: State::Black});
+        //println!("{:?}", game_board.evaluate());
+        //game_board.print_board();
+
+        assert_eq!(0, 1);
 
     }
 
@@ -81,8 +98,8 @@ mod tests {
     fn corner_kill() {
         let mut game_board = SimpleBoard::new(7, 5);
 
-        let black_x = vec![0, 1, 2, 3, 4, 5, 5, 5];
-        let black_y = vec![3, 3, 3, 2, 2, 2, 1, 0];
+        let black_x = vec![0, 1, 2, 3, 4, 5, 5, 5, 2];
+        let black_y = vec![3, 3, 3, 2, 2, 2, 1, 0, 0];
 
         for (x, y) in black_x.iter().zip(black_y.iter()) {
             let mv = GoMove::Move{x: *x, y: *y, player: State::Black};
@@ -97,9 +114,20 @@ mod tests {
             game_board.play_move(&mv);
         }
 
-        let (_, mv) = minimax(&mut game_board, 7, true);
-
-        assert_eq!(mv.unwrap(), GoMove::Move{x: 0, y: 0, player: State::Black});
+        println!("", );
+        for idx in 0..7 {
+            game_board.print_board();
+            if idx % 2 == 0 {
+                let (val, mv) = minimax(&mut game_board, 7, true);
+                game_board.play_move(&mv.unwrap());
+            }
+            else {
+                let (val, mv) = minimax(&mut game_board, 7, false);
+                game_board.play_move(&mv.unwrap());
+            }
+            println!("", );
+        }
+        assert_eq!(0, 1);
 
     }
 

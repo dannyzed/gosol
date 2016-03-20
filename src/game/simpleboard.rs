@@ -1,9 +1,9 @@
 use game::board::{GoBoard, GoMove, State};
 
-#[derive(Clone)]
-struct Group {
+#[derive(Clone, Debug)]
+pub struct Group {
     indicies: Vec<usize>,
-    liberties: i8,
+    pub liberties: i8,
     owner: State,
 }
 
@@ -12,9 +12,10 @@ struct Group {
 #[derive(Clone)]
 pub struct SimpleBoard {
     pub intersections: Vec<State>,
-    groups: Vec<Group>,
+    pub groups: Vec<Group>,
     xsize: i8,
     ysize: i8,
+    pub capture_difference: i64,
 }
 
 impl GoBoard for SimpleBoard {
@@ -23,7 +24,8 @@ impl GoBoard for SimpleBoard {
             intersections: vec![State::Empty; ((xsize as i32)*(ysize as i32)) as usize],
             groups: Vec::new(),
             xsize: xsize,
-            ysize: ysize
+            ysize: ysize,
+            capture_difference: 0,
         }
     }
 
@@ -56,7 +58,6 @@ impl SimpleBoard {
                         if group_index != None {
                             group_indicies.push(group_index.unwrap());
                         }
-                        num_neighbors += 1;
                     },
                     None => {},
                 }
@@ -66,11 +67,25 @@ impl SimpleBoard {
             let added_to_group = self.update_groups(&group_indicies, index.unwrap(), player);
             if !added_to_group {
                 // There were no neighboring groups, so we have to add one
+                for neighbor in neighbors.iter() {
+                    match *neighbor {
+                        Some(x) => {
+                            if self.intersections[x] == State::Empty {
+                                num_neighbors += 1;
+                            }
+                        },
+                        None => {},
+                    }
+                }
                 self.groups.push(Group{
                     indicies: vec![index.unwrap(); 1],
                     liberties: num_neighbors,
                     owner: player,
-                })
+                });
+                if num_neighbors == 0 {
+                    self.remove_all_dead_groups();
+                    self.recalculate_liberties();
+                }
             }
         }
     }
@@ -92,7 +107,7 @@ impl SimpleBoard {
             for y in 0..self.ysize-1 {
                 let index = self.coordinates_to_index(x, y);
                 if self.intersections[index.unwrap()] == State::Empty {
-                    mv_list.push(GoMove::Move{ x: 1, y: 0, player: player });
+                    mv_list.push(GoMove::Move{ x: x, y: y, player: player });
                 }
             }
         }
@@ -143,7 +158,6 @@ impl SimpleBoard {
             for stone in &group.indicies {
                 let (x, y) = self.index_to_coordinates(*stone);
                 let neighbor = self.neighbor_indicies(x, y);
-
                 all_neighbors.extend_from_slice(&neighbor);
             }
             all_neighbors.sort();
@@ -171,6 +185,12 @@ impl SimpleBoard {
         for (i, group) in self.groups.iter().enumerate() {
             if group.liberties == 0 {
                 groups_to_kill.push(i);
+                if group.owner == State::White {
+                    self.capture_difference += group.indicies.len() as i64;
+                }
+                else {
+                    self.capture_difference -= group.indicies.len() as i64;
+                }
             }
         }
         // Group indicies will already be sorted, so iterate in reverse order and remove
@@ -195,8 +215,7 @@ impl SimpleBoard {
     }
 
     fn coordinates_to_index(&self, x: i8, y: i8) -> Option<usize> {
-        let index: i32 = ((x as i32) + (y as i32)*(self.xsize as i32)) as i32;
-        if index < 0 || index >= (self.xsize as i32)*(self.ysize as i32) {
+        if x >= self.xsize || y >= self.ysize || x < 0 || y < 0 {
             None
         }
         else {
