@@ -1,22 +1,24 @@
 use game::simpleboard::SimpleBoard;
 use search::evaluation::Evaluation;
 
-pub fn minimax(board: &mut SimpleBoard, depth: i8, maximizing_player: bool) -> i64 {
+pub fn minimax(board: &mut SimpleBoard, depth: i8, maximizing_player: bool) -> f64 {
     if depth == 0 {
         board.evaluate()
     }
     else {
-        // Generate a list of all possible moves
-        // for each move, play it out and continue
-        // we either need to generate all moves beforehand or clone the board and keep track
-        // of the full move list, we should calculate how much memory a typical full tree will
-        // use
         if maximizing_player {
+            let mut best_value: f64 = -10000.0;
+            // Loop over all possible moves
             let v = minimax(board, depth - 1, false);
-            // return max(v, best_value)
+            best_value = v.max(best_value);
+            best_value
         }
         else {
-            let v = minimax(board, depth - 1, true);
+            let mut best_value: f64 = 10000.0;
+            // Loop over all possible moves
+            let v = minimax(board, depth - 1, false);
+            best_value = v.min(best_value);
+            best_value
         }
     }
 }

@@ -2,20 +2,20 @@ use game::simpleboard::SimpleBoard;
 use game::board::*;
 
 pub trait Evaluation {
-    fn evaluate(&self) -> i64;
+    fn evaluate(&self) -> f64;
 }
 
 impl Evaluation for SimpleBoard {
-    fn evaluate(&self) -> i64 {
+    fn evaluate(&self) -> f64 {
         // For now just count the difference between black and white stones
-        let mut difference: i64 = 0;
+        let mut difference: f64 = 0.0;
 
         for state in self.intersections.iter() {
             if *state == State::White {
-                difference -= 1;
+                difference -= 1.0;
             }
             else if *state == State::Black {
-                difference += 1;
+                difference += 1.0;
             }
         }
         difference
