@@ -18,7 +18,7 @@ pub struct SimpleBoard {
 }
 
 impl GoBoard for SimpleBoard {
-    fn new(ysize: i8, xsize: i8) -> SimpleBoard {
+    fn new(xsize: i8, ysize: i8) -> SimpleBoard {
         SimpleBoard {
             intersections: vec![State::Empty; ((xsize as i32)*(ysize as i32)) as usize],
             groups: Vec::new(),
@@ -83,6 +83,21 @@ impl SimpleBoard {
             }
         }
         ret
+    }
+
+    pub fn move_list(&self, player: State) -> Vec<GoMove> {
+        let mut mv_list: Vec<GoMove> = Vec::new();
+
+        for x in 0..self.xsize-1 {
+            for y in 0..self.ysize-1 {
+                let index = self.coordinates_to_index(x, y);
+                if self.intersections[index.unwrap()] == State::Empty {
+                    mv_list.push(GoMove::Move{ x: 1, y: 0, player: player });
+                }
+            }
+        }
+        mv_list.push(GoMove::Pass{});
+        mv_list
     }
 
     fn update_groups(&mut self, group_indicies: &Vec<usize>, play_index: usize, player: State) -> bool {

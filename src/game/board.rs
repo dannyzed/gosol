@@ -15,7 +15,7 @@ pub enum GoMove {
 // to perform the search over the board.
 pub trait GoBoard {
     // Initializes an empty go board with sizes xsize and ysize
-    fn new(ysize: i8, xsize: i8) -> Self;
+    fn new(xsize: i8, ysize: i8) -> Self;
 
     // Plays a given move on the goboard
     fn play_move(&mut self, GoMove);
