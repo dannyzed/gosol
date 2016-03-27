@@ -7,6 +7,11 @@ Current State
 gosol can currently solve closed tsumego problems that do not require a large amount of moves.  There
 is currently no user friendly interface exposing this functionality.
 
+Building
+--------
+As of March 26 2016, gosol compiles on the beta and nightly versions of the
+rust compiler.  
+
 Planned Improvements/Features
 -----------------------------
  * Rewrite the board/game code.  In order to get something functioning I have "circumvented" the rust borrow checker by using indicies instead of references in some places.

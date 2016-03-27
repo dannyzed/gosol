@@ -6,3 +6,6 @@ rust:
 script:
   - cargo build --verbose
   - cargo test --verbose --release
+matrix:
+  allow_failures:
+    - rust: stable
