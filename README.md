@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/dannyzed/gosol.svg?branch=master)](https://travis-ci.org/dannyzed/gosol)
+
 gosol
 =====
 gosol is a tsumego solver written in rust.  The focus of this project is primarily to learn rust rather than create the best possible tsumego solver.
