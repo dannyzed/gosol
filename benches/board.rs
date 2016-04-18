@@ -15,7 +15,7 @@ fn bench_play_200_moves(b: &mut Bencher) {
     b.iter(|| {
         let mut game_board = SimpleBoard::new(19, 19);
 
-        for i in (0..200) {
+        for i in 0..200 {
             let x = rand::thread_rng().gen_range(0, 19);
             let y = rand::thread_rng().gen_range(0, 19);
 
@@ -34,7 +34,7 @@ fn bench_play_10_moves_small(b: &mut Bencher) {
     b.iter(|| {
         let mut game_board = SimpleBoard::new(10, 10);
 
-        for i in (0..10) {
+        for i in 0..10 {
             let x = rand::thread_rng().gen_range(0, 10);
             let y = rand::thread_rng().gen_range(0, 10);
 
