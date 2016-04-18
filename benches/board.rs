@@ -20,10 +20,10 @@ fn bench_play_200_moves(b: &mut Bencher) {
             let y = rand::thread_rng().gen_range(0, 19);
 
             if i % 2 == 0 {
-                game_board.play_move(GoMove::Move{x: x, y: y, player: State::Black});
+                game_board.play_move(&GoMove::Move{x: x, y: y, player: State::Black});
             }
             else {
-                game_board.play_move(GoMove::Move{x: x, y: y, player: State::White});
+                game_board.play_move(&GoMove::Move{x: x, y: y, player: State::White});
             }
         }
     })
@@ -39,10 +39,10 @@ fn bench_play_10_moves_small(b: &mut Bencher) {
             let y = rand::thread_rng().gen_range(0, 10);
 
             if i % 2 == 0 {
-                game_board.play_move(GoMove::Move{x: x, y: y, player: State::Black});
+                game_board.play_move(&GoMove::Move{x: x, y: y, player: State::Black});
             }
             else {
-                game_board.play_move(GoMove::Move{x: x, y: y, player: State::White});
+                game_board.play_move(&GoMove::Move{x: x, y: y, player: State::White});
             }
         }
     })
